@@ -19,4 +19,9 @@
 
 include_recipe 'iptables::default'
 
-iptables_rule 'port_ssh'
+iptables_rule 'port_ssh' do
+  variables({
+              :port => node['openssh']['server']['port']
+            })
+
+end
