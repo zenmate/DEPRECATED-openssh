@@ -8,4 +8,4 @@ group :integration do
   cookbook 'ips-omniti'
 end
 
-cookbook 'openssh_service_test', path: 'test/fixtures/cookbooks/openssh_test'
+cookbook 'openssh_test', path: 'test/fixtures/cookbooks/openssh_test'
