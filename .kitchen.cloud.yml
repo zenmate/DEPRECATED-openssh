@@ -134,11 +134,11 @@ platforms:
 
 suites:
   #
-  # default
+  # service
   #
-  - name: server
+  - name: service
     run_list:
-    - recipe[openssh::default]
+    - recipe[openssh_test::service]
     includes: [
       'amazon-2013.09',
       'amazon-2014.03',

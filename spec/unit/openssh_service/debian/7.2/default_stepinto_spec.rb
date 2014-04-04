@@ -16,8 +16,20 @@ describe 'openssh_test::service on debian-7.2' do
       expect(debian_7_2_default_stepinto_run).to create_openssh_service('debian_7_2_default_stepinto')
     end
 
-    it 'steps into openssh_service and writes log[message for debian-7.2]' do
-      expect(debian_7_2_default_stepinto_run).to write_log('Sorry, openssh_service support for debian-7.2 has not yet been implemented.')
+    it 'steps into openssh_service and installs package[openssh-server]' do
+      expect(debian_7_2_default_stepinto_run).to install_package('openssh-server')
+    end
+
+    it 'steps into openssh_service and create template[/etc/ssh/sshd_config]' do
+      expect(debian_7_2_default_stepinto_run).to create_template('/etc/ssh/sshd_config').with(
+        :owner => 'root',
+        :mode => '0644'
+        )
+    end
+
+    it 'steps into openssh_service and manages service[ssh]' do
+      expect(debian_7_2_default_stepinto_run).to start_service('ssh')
+      expect(debian_7_2_default_stepinto_run).to enable_service('ssh')
     end
   end
 end

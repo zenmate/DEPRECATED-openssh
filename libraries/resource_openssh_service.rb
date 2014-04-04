@@ -80,7 +80,7 @@ class Chef
       attribute :ciphers,
       :kind_of => String,
       :regex => /.*/,
-      :default => 'aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com'
+      :default => 'aes128-ctr,aes192-ctr,aes256-ctr'
 
       attribute :client_alive_count_max,
       :kind_of => String,
@@ -143,11 +143,11 @@ class Chef
       :default => nil
 
       attribute :host_key,
-      :kind_of => String,
+      :kind_of => [String],
       :regex => /.*/,
-      :default => nil
+      :default => %w(/etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_ecdsa_key)
 
-      attribute :HostKeyAgent,
+      attribute :host_key_agent,
       :kind_of => String,
       :regex => /.*/,
       :default => nil
@@ -172,6 +172,11 @@ class Chef
       :equal_to => [true, false, 'yes', 'no'],
       :default => nil
 
+      attribute :kerberos_authentication,
+      :kind_of => [TrueClass, FalseClass, String],
+      :equal_to => [true, false, 'yes', 'no'],
+      :default => nil
+
       attribute :kerberos_get_afs_token,
       :kind_of => [TrueClass, FalseClass, String],
       :equal_to => [true, false, 'yes', 'no'],
@@ -190,7 +195,7 @@ class Chef
       attribute :kex_algorithms,
       :kind_of => String,
       :regex => /.*/,
-      :default => 'curve25519-sha256@libssh.org,diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521'
+      :default => 'diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521'
 
       attribute :key_regeneration_interval,
       :kind_of => String,
@@ -198,9 +203,9 @@ class Chef
       :default => nil
 
       attribute :listen_address,
-      :kind_of => String,
+      :kind_of => [String],
       :regex => /.*/,
-      :default => nil
+      :default => %w(:: 0.0.0.0)
 
       attribute :login_grace_time,
       :kind_of => String,
@@ -215,7 +220,7 @@ class Chef
       attribute :macs,
       :kind_of => String,
       :regex => /.*/,
-      :default => 'umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512'
+      :default => 'hmac-sha2-256,hmac-sha2-512'
 
       attribute :max_auth_tries,
       :kind_of => String,
@@ -273,9 +278,9 @@ class Chef
       :default => nil
 
       attribute :port,
-      :kind_of => String,
+      :kind_of => [String],
       :regex => /^\d+$/,
-      :default => nil
+      :default => ['22']
 
       attribute :print_last_log,
       :kind_of => [TrueClass, FalseClass, String],
@@ -337,6 +342,11 @@ class Chef
       :equal_to => %w(DAEMON USER AUTH LOCAL0 LOCAL1 LOCAL2 LOCAL3 LOCAL4 LOCAL5 LOCAL6 LOCAL7),
       :default => nil
 
+      attribute :template_source,
+      :kind_of => String,
+      :regex => /.*/,
+      :default => nil
+
       attribute :tcp_keep_alive,
       :kind_of => [TrueClass, FalseClass, String],
       :equal_to => [true, false, 'yes', 'no'],
@@ -371,7 +381,6 @@ class Chef
       :kind_of => String,
       :regex => /^\d+$/,
       :default => nil
-
 
       attribute :x11_forwarding,
       :kind_of => [TrueClass, FalseClass, String],
