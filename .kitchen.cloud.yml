@@ -54,19 +54,6 @@ platforms:
     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
     ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
 
-- name: omnios-151006
-  driver_plugin: ec2
-  driver_config:
-    availability_zone: us-east-1d
-    image_id: ami-35eb835c
-    flavor_id: m3.medium
-    username: root
-    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
-  provisioner:
-    name: chef_zero
-  run_list:
-  - recipe[ips-omniti]
-
 - name: centos-5.8
   driver_plugin: digitalocean
   driver_config:
@@ -98,6 +85,13 @@ platforms:
     name: chef_zero
     sudo: false
     chef_omnibus_url: https://raw.github.com/test-kitchen/kitchen-joyent/master/scripts/install-smartos.sh
+
+- name: suse-11-sp3
+  driver_plugin: ec2
+  driver_config:
+    image_id: ami-e8084981
+    username: root
+    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
 
 - name: ubuntu-10.04
   driver_plugin: digitalocean
@@ -144,10 +138,10 @@ suites:
       'amazon-2014.03',
       'debian-7.2',
       'fedora-19',
-      'omnios-151006',
       'centos-5.8',
       'centos-6.4',
       'smartos-13.4.0',
+      'suse-11-sp3',
       'ubuntu-10.04',
       'ubuntu-12.04',
       'ubuntu-13.10',

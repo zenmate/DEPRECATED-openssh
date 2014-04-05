@@ -3,7 +3,7 @@ require 'chef/provider/lwrp_base'
 class Chef
   class Provider
     class OpensshService
-      class Fedora < Chef::Provider::OpensshService
+      class Suse < Chef::Provider::OpensshService
         use_inline_resources if defined?(use_inline_resources)
 
         def whyrun_supported?
@@ -11,9 +11,9 @@ class Chef
         end
 
         action :create do
-          converge_by 'fedora pattern' do
+          converge_by 'suse pattern' do
 
-            package 'openssh-server' do
+            package 'openssh' do
               action :install
             end
 
@@ -32,10 +32,8 @@ class Chef
             end
 
             service 'sshd' do
-              provider Chef::Provider::Service::Systemd
               action [:start, :enable]
             end
-
           end
         end
       end
@@ -43,4 +41,4 @@ class Chef
   end
 end
 
-Chef::Platform.set :platform => :fedora, :resource => :openssh_service, :provider => Chef::Provider::OpensshService::Fedora
+Chef::Platform.set :platform => :suse, :resource => :openssh_service, :provider => Chef::Provider::OpensshService::Suse

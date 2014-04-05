@@ -12,7 +12,7 @@ describe 'openssh_test::service on omnios-151006' do
   end
 
   context 'when using default parameters' do
-    it 'creates openssh_service[omnios_151006_default_stepinto]' do
+    it 'creates openssh_thing[omnios_151006_default_stepinto]' do
       expect(omnios_151006_default_stepinto_run).to create_openssh_service('omnios_151006_default_stepinto')
     end
 

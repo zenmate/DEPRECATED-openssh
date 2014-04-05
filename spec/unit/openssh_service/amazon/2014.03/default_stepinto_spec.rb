@@ -16,8 +16,24 @@ describe 'openssh_test::service on amazon-2014.03' do
       expect(amazon_2014_03_default_stepinto_run).to create_openssh_service('amazon_2014_03_default_stepinto')
     end
 
-    it 'steps into openssh_service and runs ruby_block[message for amazon-2014.03]' do
-      expect(amazon_2014_03_default_stepinto_run).to write_log('Sorry, openssh_service support for amazon-2014.03 has not yet been implemented.')
+    it 'creates openssh_service[amazon_2014_03_default_stepinto]' do
+      expect(amazon_2014_03_default_stepinto_run).to create_openssh_service('amazon_2014_03_default_stepinto')
+    end
+
+    it 'steps into openssh_service and installs package[openssh-server]' do
+      expect(amazon_2014_03_default_stepinto_run).to install_package('openssh-server')
+    end
+
+    it 'steps into openssh_service and create template[/etc/ssh/sshd_config]' do
+      expect(amazon_2014_03_default_stepinto_run).to create_template('/etc/ssh/sshd_config').with(
+        :owner => 'root',
+        :mode => '0644'
+        )
+    end
+
+    it 'steps into openssh_service and manages service[sshd]' do
+      expect(amazon_2014_03_default_stepinto_run).to start_service('sshd')
+      expect(amazon_2014_03_default_stepinto_run).to enable_service('sshd')
     end
   end
 end

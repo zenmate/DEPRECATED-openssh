@@ -13,10 +13,24 @@ class Chef
         action :create do
           converge_by 'smartos pattern' do
 
-            log "Sorry, openssh_service support for #{node['platform']}-#{node['platform_version']} has not yet been implemented." do
-              level :info
+            template '/etc/ssh/sshd_config' do
+              if new_resource.template_source.nil?
+                source 'sshd_config.erb'
+                cookbook 'openssh'
+              else
+                source new_resource.template_source
+              end
+              owner 'root'
+              mode '0644'
+              variables(:config => new_resource)
+#              notifies :restart, 'service[ssh]'
+              action :create
             end
 
+            service 'ssh' do
+              provider Chef::Provider::Service::Solaris
+              action [:start, :enable]
+            end
           end
         end
       end
